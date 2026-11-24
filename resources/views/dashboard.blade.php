@@ -1,0 +1,16 @@
+@include('layouts.modern-start', ['title' => 'Dashboard'])
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div><div class="fw-semibold">Ringkasan Hari Ini</div><div class="text-secondary small">Pantau operasional laundry terbaru.</div></div>
+</div>
+<div class="row g-3 mb-4">
+    <div class="col-6 col-xl-3"><div class="card content-card h-100 rounded-3"><div class="card-body d-flex justify-content-between align-items-start"><div><span class="text-secondary small">Transaksi Hari Ini</span><h3 class="fw-bold mb-0 mt-1">{{ $todayTransactions }}</h3></div><span class="rounded-circle d-inline-flex align-items-center justify-content-center" style="width:38px;height:38px;background:#edf4fb;color:#3b82c4"><i class="bi bi-receipt"></i></span></div></div></div>
+    <div class="col-6 col-xl-3"><div class="card content-card h-100 rounded-3"><div class="card-body d-flex justify-content-between align-items-start"><div><span class="text-secondary small">Sedang Diproses</span><h3 class="fw-bold mb-0 mt-1" style="color:#3b82c4">{{ $processing }}</h3></div><span class="rounded-circle d-inline-flex align-items-center justify-content-center" style="width:38px;height:38px;background:#edf4fb;color:#3b82c4"><i class="bi bi-arrow-repeat"></i></span></div></div></div>
+    <div class="col-6 col-xl-3"><div class="card content-card h-100 rounded-3"><div class="card-body d-flex justify-content-between align-items-start"><div><span class="text-secondary small">Siap Diambil</span><h3 class="fw-bold mb-0 mt-1" style="color:#c59a45">{{ $ready }}</h3></div><span class="rounded-circle d-inline-flex align-items-center justify-content-center" style="width:38px;height:38px;background:#fbf6ea;color:#c59a45"><i class="bi bi-bag-check"></i></span></div></div></div>
+    <div class="col-6 col-xl-3"><div class="card content-card h-100 rounded-3"><div class="card-body d-flex justify-content-between align-items-start"><div><span class="text-secondary small">Pendapatan Bulan Ini</span><h3 class="fw-bold text-success mb-0 mt-1 fs-4">Rp {{ number_format($monthlyIncome,0,',','.') }}</h3></div><span class="rounded-circle d-inline-flex align-items-center justify-content-center" style="width:38px;height:38px;background:#edf7f2;color:#5a9a76"><i class="bi bi-wallet2"></i></span></div></div></div>
+</div>
+<div class="card content-card rounded-3"><div class="card-header bg-white fw-semibold py-3">Transaksi Terbaru</div><div class="table-responsive">
+<table class="table align-middle mb-0"><thead class="table-light"><tr><th>Invoice</th><th>Kode Transaksi</th><th>Pelanggan</th><th>Layanan</th><th>Total</th><th>Status</th></tr></thead><tbody>
+@forelse($recent as $order)<tr><td class="fw-semibold">{{ $order->invoice_number ?? '-' }}</td><td><span class="badge text-bg-light border text-dark">{{ $order->kode_transaksi }}</span></td><td>{{ $order->nama_pelanggan }}</td><td>{{ $order->service->nama_layanan }}</td><td>Rp {{ number_format($order->total_harga,0,',','.') }}</td><td><span class="badge {{ $order->status === 'Selesai' ? 'text-bg-success' : 'text-bg-primary' }}">{{ $order->status }}</span></td></tr>
+@empty<tr><td colspan="6" class="text-center py-4 text-secondary">Belum ada transaksi</td></tr>@endforelse
+</tbody></table></div></div>
+@include('layouts.modern-end')
